@@ -64,13 +64,15 @@ object List { // `List` companion object
       case Nil => Nil
     }
 
-  def dropWhile[A](l: List[A])(f: A => Boolean): List[A] = 
-    l match {
-      case Cons(h, t) if f(h) => dropWhile(t)(f)
-      case _ => l
-    }
+  def dropWhile[A](l: List[A])(f: A => Boolean): List[A] = l match {
+    case Cons(h, t) if f(h) => dropWhile(t)(f)
+    case _ => l
+  }
 
-  def setHead[A](l: List[A])(h: A): List[A] = sys.error("todo")
+  def setHead[A](l: List[A])(h: A): List[A] = l match {
+    case Cons(_, t) => Cons(h, t)
+    case Nil => throw new IllegalArgumentException("Empty list has no head")
+  }
 
   def init[A](l: List[A]): List[A] = sys.error("todo")
 
