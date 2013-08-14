@@ -56,7 +56,13 @@ object List { // `List` companion object
     case Nil => throw new IllegalArgumentException("Cannot return tail of empty list")
   }
 
-  def drop[A](l: List[A], n: Int): List[A] = sys.error("todo")
+  def drop[A](l: List[A], n: Int): List[A] = 
+    if (n == 0) l 
+    else if (n < 0) throw new IllegalArgumentException("Cannot drop negative number " + n)
+    else l match {
+      case Cons(_, t) => drop(t, n-1)
+      case Nil => Nil
+    }
 
   def dropWhile[A](l: List[A])(f: A => Boolean): List[A] = sys.error("todo")
 
