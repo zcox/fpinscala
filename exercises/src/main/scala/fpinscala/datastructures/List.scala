@@ -74,7 +74,11 @@ object List { // `List` companion object
     case Nil => throw new IllegalArgumentException("Empty list has no head")
   }
 
-  def init[A](l: List[A]): List[A] = sys.error("todo")
+  def init[A](l: List[A]): List[A] = l match {
+    case Cons(h, Nil) => Nil
+    case Cons(h, t) => Cons(h, init(t))
+    case Nil => throw new IllegalArgumentException("Empty list has no tail")
+  }
 
   def length[A](l: List[A]): Int = sys.error("todo")
 
