@@ -82,7 +82,20 @@ object List { // `List` companion object
 
   def length[A](l: List[A]): Int = foldRight(l, 0) { (_, b) => b+1 }
 
-  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = sys.error("todo")
+  /*
+  Cons(1, Cons(2, Cons(3, Nil)))
+  foldLeft(Cons(1, Cons(2, Cons(3, Nil))), 0)(_ + _)
+  foldLeft(Cons(2, Cons(3, Nil)), (0 + 1))(_ + _)
+  foldLeft(Cons(3, Nil), ((0 + 1) + 2))(_ + _)
+  foldLeft(Nil, ((0 + 1) + 2) + 3)(_ + _)
+  ((0 + 1) + 2) + 3
+  6
+  */
+  @annotation.tailrec
+  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = l match {
+    case Cons(x, xs) => foldLeft(xs, f(z, x))(f)
+    case Nil => z
+  }
 
   def map[A,B](l: List[A])(f: A => B): List[B] = sys.error("todo")
 }
