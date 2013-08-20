@@ -105,5 +105,27 @@ object List { // `List` companion object
 
   def reverse[A](l: List[A]): List[A] = foldLeft(l, Nil: List[A]) { (r, a) => Cons(a, r) }
 
+  //maybe using reverse is cheating? hint doesn't seem to suggest using it... although answer does impl foldRight with reverse :)
+  def foldLeft2[A,B](l: List[A], z: B)(f: (B, A) => B): B = foldRight(reverse(l), z) { (b, a) => f(a, b) }
+  def foldRight2[A,B](l: List[A], z: B)(f: (A, B) => B): B = foldLeft(reverse(l), z) { (a, b) => f(b, a) }
+
+  /*
+  The result type of the foldRight is B => B
+  Then after the foldRight is done, that function is called with the value z
+  */
+  def foldLeft3[A,B](l: List[A], z: B)(f: (B, A) => B): B = {//foldRight(l, (b:B) => b)((a,g) => b => g(f(b,a)))(z)
+    type G = B => B
+    val z2: G = b => b
+    val f2: (A, G) => G = (a,g) => b => g(f(b,a))
+    val fr: G = foldRight(l, z2)(f2)
+    fr(z)
+  }
+
+  def foldRight3[A,B](l: List[A], z: B)(f: (A, B) => B): B = ???
+
+  def append2[A](a1: List[A], a2: List[A]): List[A] = foldRight(a1, a2) { (a, bs) => Cons(a, bs) }
+
+  def concat[A](lists: List[List[A]]): List[A] = foldRight(lists, Nil: List[A])(append)
+
   def map[A,B](l: List[A])(f: A => B): List[B] = sys.error("todo")
 }
