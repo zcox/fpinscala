@@ -132,4 +132,12 @@ object List { // `List` companion object
   def toStrings(l: List[Double]): List[String] = foldRight(l, Nil: List[String]) { (d, l2) => Cons(d.toString, l2) }
 
   def map[A,B](l: List[A])(f: A => B): List[B] = foldRight(l, Nil: List[B]) { (a, l2) => Cons(f(a), l2) }
+
+  def filter[A](l: List[A])(f: A => Boolean): List[A] = 
+    foldRight(l, Nil: List[A]) { (a, l2) => if (f(a)) Cons(a, l2) else l2 }
+
+  def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] = 
+    foldRight(l, Nil: List[B]) { (a, l2) => append(f(a), l2) }       //answer key uses this: concat(map(l)(f)), pretty slick!
+
+  def filter2[A](l: List[A])(f: A => Boolean): List[A] = flatMap(l)(a => if (f(a)) List(a) else Nil)
 }
