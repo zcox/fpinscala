@@ -127,5 +127,9 @@ object List { // `List` companion object
 
   def concat[A](lists: List[List[A]]): List[A] = foldRight(lists, Nil: List[A])(append)
 
-  def map[A,B](l: List[A])(f: A => B): List[B] = sys.error("todo")
+  def addOne(l: List[Int]): List[Int] = foldRight(l, Nil: List[Int]) { (i, l2) => Cons(i+1, l2) }
+
+  def toStrings(l: List[Double]): List[String] = foldRight(l, Nil: List[String]) { (d, l2) => Cons(d.toString, l2) }
+
+  def map[A,B](l: List[A])(f: A => B): List[B] = foldRight(l, Nil: List[B]) { (a, l2) => Cons(f(a), l2) }
 }
