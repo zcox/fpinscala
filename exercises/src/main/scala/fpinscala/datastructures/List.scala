@@ -140,4 +140,21 @@ object List { // `List` companion object
     foldRight(l, Nil: List[B]) { (a, l2) => append(f(a), l2) }       //answer key uses this: concat(map(l)(f)), pretty slick!
 
   def filter2[A](l: List[A])(f: A => Boolean): List[A] = flatMap(l)(a => if (f(a)) List(a) else Nil)
+
+  def addLists(l1: List[Int], l2: List[Int]): List[Int] = (l1, l2) match {
+    case (Cons(h1, t1), Cons(h2, t2)) => Cons(h1+h2, addLists(t1, t2))
+    case _ => Nil //we get here as soon as we hit the end of either list
+  }
+
+  //bah, answer key generalized to differently typed lists, and I should've named this zipWith... #fail
+  def combine[A, B](l1: List[A], l2: List[A])(f: (A, A) => B): List[B] = (l1, l2) match {
+    case (Cons(h1, t1), Cons(h2, t2)) => Cons(f(h1, h2), combine(t1, t2)(f))
+    case _ => Nil
+  }
+
+  //really is fucking beautiful how this impl is identical to combine, even though the lists have different types
+  def zipWith[A, B, C](l1: List[A], l2: List[B])(f: (A, B) => C): List[C] = (l1, l2) match {
+    case (Cons(h1, t1), Cons(h2, t2)) => Cons(f(h1, h2), zipWith(t1, t2)(f))
+    case _ => Nil
+  }
 }
