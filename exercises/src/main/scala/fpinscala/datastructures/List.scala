@@ -157,4 +157,26 @@ object List { // `List` companion object
     case (Cons(h1, t1), Cons(h2, t2)) => Cons(f(h1, h2), zipWith(t1, t2)(f))
     case _ => Nil
   }
+
+  /*
+  Assume l is longer than sub
+  Start at left of l
+  Check if prefix of l == sub
+  If so then return true
+  Else check tail of l and all of sub
+  */
+  @annotation.tailrec
+  def hasSubsequence[A](l: List[A], sub: List[A]): Boolean = { //answer key looks very similar to my solution, although i may have missed some edge cases in checkPrefix... but this passes all tests I could throw at it
+    //returns true if l1 has l2 as its prefix
+    def checkPrefix(l1: List[A], l2: List[A]): Boolean = (l1, l2) match {
+      case (Cons(h1, t1), Cons(h2, t2)) if h1 == h2 => checkPrefix(t1, t2)
+      case (Cons(h1, t1), Cons(h2, t2)) => false //h1 != h2
+      case (_, Nil) => true //we checked all of l2 so it must have been a prefix
+    }
+
+    l match {
+      case Cons(_,t) => if (checkPrefix(l, sub)) true else hasSubsequence(t, sub) //last thing here is recursive call so it should be tailrec
+      case Nil => false //there's probably earlier termination like if length(l) < length(sub)
+    }
+  }
 }
