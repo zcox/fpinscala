@@ -92,11 +92,12 @@ object Option {
     mkMatcher(pat) flatMap (f => 
     mkMatcher(pat2) map     (g => 
     f(s) && g(s)))
+
   def variance(xs: Seq[Double]): Option[Double] = sys.error("todo")
 
-  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = sys.error("todo")
+  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = for (a1 <- a; b1 <- b) yield f(a1, b1)
 
-  def bothMatch_2(pat1: String, pat2: String, s: String): Option[Boolean] = sys.error("todo")
+  def bothMatch_2(pat1: String, pat2: String, s: String): Option[Boolean] = map2(mkMatcher(pat1), mkMatcher(pat2))((f, g) => f(s) && g(s))
 
   def sequence[A](a: List[Option[A]]): Option[List[A]] = sys.error("todo")
 
